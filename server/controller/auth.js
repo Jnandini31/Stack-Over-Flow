@@ -1,44 +1,50 @@
+import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import User from "../models/auth.js";
-import jwt from 'jsonwebtoken'
 
-export const signup = async(req,res)=>{
-  const {name, email, password}=req.body;
+import users from "../models/auth.js";
+
+export const signup = async (req, res) => {
+  const { name, email, password } = req.body;
   try {
-    const extinguser=await User.findOne({email});
-    if(extinguser){
-      return res.status(404).json({message:"User already exist"});
+    const existinguser = await users.findOne({ email });
+    if (existinguser) {
+      return res.status(404).json({ message: "User already Exist." });
     }
-    const hashedpassword=await bcrypt.hash(password, 12);
-    const newuser = await User.create({
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const newUser = await users.create({
       name,
       email,
-      password:hashedpassword
+      password: hashedPassword,
     });
-    res.status(200).json({result:newuser});
+    const token = jwt.sign(
+      { email: newUser.email, id: newUser._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    res.status(200).json({ result: newUser, token });
   } catch (error) {
-    res.status(500).json("something went wrong...")
+    res.status(500).json("Something went worng...");
   }
 };
-
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const extinguser = await users.findOne({ email });
-    if (!extinguser) {
+    const existinguser = await users.findOne({ email });
+    if (!existinguser) {
       return res.status(404).json({ message: "User don't Exist." });
     }
-    const isPasswordCrt = await bcrypt.compare(password, extinguser.password);
+    const isPasswordCrt = await bcrypt.compare(password, existinguser.password);
     if (!isPasswordCrt) {
       return res.status(400).json({ message: "Invalid credentials" });
-      return
     }
-    const token=jwt.sign({
-        email:extinguser.email,id:extinguser._id
-    },process.env.JWT_SECRET,{expiresIn:"1h"}
-)
-    res.status(200).json({ result: extinguser, token });
+    const token = jwt.sign(
+      { email: existinguser.email, id: existinguser._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    res.status(200).json({ result: existinguser, token });
   } catch (error) {
     res.status(500).json("Something went worng...");
   }

@@ -1,23 +1,23 @@
 import mongoose from "mongoose";
 
-const Questionschema=mongoose.Schema({
-  questiontitle:{type:String, required:"Question must have a title"},
-  questionbody:{type:String, required:"Question must have a body"},
-  questiontags:{type:[String], required:"Question must have a tags"},
-  noofanswers:{type:[String], default:0},
-  upvote:{type:[String],  default:[]},
-  downvote:{type:[String],  default:[]},
-  userposted:{type:String,required:"Question must have an author" },
-  userid:{type:String},
-  askedon:{type:Date,default:Date.now},
-  answer:[
+const QuestionSchema = mongoose.Schema({
+  questionTitle: { type: String, required: "Question must have a title" },
+  questionBody: { type: String, required: "Question must have a body" },
+  questionTags: { type: [String], required: "Question must have a tags" },
+  noOfAnswers: { type: Number, default: 0 },
+  upVote: { type: [String], default: [] },
+  downVote: { type: [String], default: [] },
+  userPosted: { type: String, required: "Question must have an author" },
+  userId: { type: String },
+  askedOn: { type: Date, default: Date.now },
+  answer: [
     {
-      answerbody:String,
-      useranswered:String,
-      userid:String,
-      answeredon:{type:Date,default:Date.now}
+      answerBody: String,
+      userAnswered: String,
+      userId: String,
+      answeredOn: { type: Date, default: Date.now },
     },
   ],
 });
 
-export default mongoose.model("Question", Questionschema)
+export default mongoose.model("Question", QuestionSchema);

@@ -1,38 +1,41 @@
-import mongoose from 'mongoose';
-import users from '../models/auth.js'
+import mongoose from "mongoose";
+import users from "../models/auth.js";
 
-export const getalluser = async (req,res)=>{
+export const getAllUsers = async (req, res) => {
   try {
-    const allusers = await users.find()
-    const allusersdetails = [];
-    allusers.forEach((user)=>{
-      allusersdetails.push({_id:user._id,
-        name:user.name,
-        about:user.about,
-        tags:user.tags,
-        joinedon:user.joinedon,
+    const allUsers = await users.find();
+    const allUserDetails = [];
+    allUsers.forEach((user) => {
+      allUserDetails.push({
+        _id: user._id,
+        name: user.name,
+        about: user.about,
+        tags: user.tags,
+        joinedOn: user.joinedOn,
       });
     });
-    res.status(200).json(allusersdetails)
+    res.status(200).json(allUserDetails);
   } catch (error) {
-    res.status(404).json({message:error.message})
-    return
+    res.status(404).json({ message: error.message });
   }
 };
 
-export const updateprofile=async(req,res)=>{
-    const {id:_id}=req.params;
-    const {name, about, tags}=req.body;
-    if(!mongoose.Types.ObjectId.isValid(_id)){
-        return res.status(404).send("user unavaliable");
-    }
-    try {
-        const updateprofile=await users.findByIdAndUpdate(_id, {$set:{name:name,about:about,tags:tags}},
-            {new:true}
-        );
-        res.status(200).json(updateprofile)
-    } catch (error) {
-        res.status(404).json({message:error.message})
-        return
-    }
+export const updateProfile = async (req, res) => {
+  const { id: _id } = req.params;
+  const { name, about, tags } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(404).send("question unavailable...");
+  }
+
+  try {
+    const updatedProfile = await users.findByIdAndUpdate(
+      _id,
+      { $set: { name: name, about: about, tags: tags } },
+      { new: true }
+    );
+    res.status(200).json(updatedProfile);
+  } catch (error) {
+    res.status(405).json({ message: error.message });
+  }
 };

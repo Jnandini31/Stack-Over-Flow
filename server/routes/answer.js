@@ -1,8 +1,11 @@
 import express from "express";
-import { postanswer, deleteanswer} from '../controller/Answer.js';
-import auth from '../middleware/auth.js'
+
+import { postAnswer, deleteAnswer } from "../controller/Answer.js";
+import auth from "../middleware/auth.js";
+
 const router = express.Router();
-router.patch("/post/:id",auth,postanswer);
-router.patch("/delete/:id",auth,deleteanswer);
+
+router.patch("/post/:id", auth, postAnswer);
+router.patch("/delete/:id", auth, deleteAnswer);
 
 export default router;

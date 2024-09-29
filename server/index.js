@@ -2,18 +2,18 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import userroutes from "./routes/user.js";
-import questionroutes from "./routes/question.js";
-import answerrouter from './routes/answer.js';
+import userRoutes from "./routes/user.js";
+import questionRoutes from "./routes/Question.js";
+import answerRoutes from "./routes/Answer.js";
 const app=express();
 dotenv.config();
 app.use(express.json({limit:"30mb", extended: true}))
 app.use(express.urlencoded({limit:"30mb",extended:true}))
 app.use(cors());
 
-app.use("/user",userroutes);
-app.use("/questions", questionroutes);
-app.use("/answer",answerrouter);
+app.use("/user", userRoutes);
+app.use("/questions", questionRoutes);
+app.use("/answer", answerRoutes);
 app.get('/',(req, res)=>{
    res.send("Stack Over Flow is running perfect")
 })

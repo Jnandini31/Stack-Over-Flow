@@ -15,7 +15,7 @@ export const AskQuestion=async(req,res)=>{
   }
 };
 
-export const getallquestion= async (req, res) => {
+export const getAllQuestions= async (req, res) => {
   try {
     const Questionlist = await Question.find().sort({ askedOn: -1 });
     res.status(200).json(Questionlist);
@@ -24,7 +24,7 @@ export const getallquestion= async (req, res) => {
   }
 };
 
-export const deletequestion =async(req,res)=>{
+export const deleteQuestion =async(req,res)=>{
   const{id:_id}=req.params;
   if(!mongoose.Types.ObjectId.isValid(_id)){
     return res.status(404).send("question unavailable...");
@@ -37,7 +37,7 @@ export const deletequestion =async(req,res)=>{
   }
 }
 
-export const votequestion=async(req,res)=>{
+export const voteQuestion=async(req,res)=>{
   const{id:_id}=req.params;
   const {value}=req.body;
   const userid=req.userid;
